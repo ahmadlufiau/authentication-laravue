@@ -41,18 +41,37 @@ const router = new VueRouter({
         {
             path: '/register',
             name: 'register',
-            component: Register
+            component: Register,
+            meta: {
+                auth: false
+            }
         },
         {
             path: '/login',
             name: 'login',
-            component: Login
+            component: Login,
+            meta: {
+                auth: false
+            }
+        },
+        {
+            path: '/dashboard',
+            name: 'dashboard',
+            component: Dashboard,
+            meta: {
+                auth: true
+            }
         }
     ]
 });
 
-new Vue({
-    el: '#app',
-    router: router,
-    render: app => app(App)
+Vue.router = router
+
+Vue.use(require('@websanova/vue-auth'), {
+    auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
+    http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
+    router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
 });
+
+App.router = Vue.router
+new Vue(App).$mount('#app');
